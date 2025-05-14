@@ -4,11 +4,13 @@ from san import AsyncBatch
 from pathlib import Path
 import os
 from datetime import datetime, timezone, timedelta
-import keys
+import dotenv
 import argparse
 import json
 from apscheduler.schedulers.blocking import BlockingScheduler
 import warnings
+
+dotenv.load_dotenv()
 
 class SantimentScraper:
     INTERVALS = {'1h': 60, '24h': 1440}
@@ -115,7 +117,7 @@ class SantimentScraper:
 
 
 def main(args):
-    LOGIN_CREDENTIALS = {"santiment_api_key": keys.san_api_key}
+    LOGIN_CREDENTIALS = {"santiment_api_key": os.getenv("SAN_API_KEY")}
     
     san.ApiConfig.api_key = LOGIN_CREDENTIALS["santiment_api_key"]
 
@@ -158,6 +160,14 @@ if __name__ == "__main__":
     parser.add_argument('--endpoint_file_paths', required=True, help='path of endpoints_file_path_santiment.json')
     parser.add_argument('--save_folder', required=True, help='Folder path to save the scraped data, e.g., "./data/test/santiment/historical"')
     parser.add_argument('--mode', required=True, help='mode to scrape data', choices=["historical", "live"])
-
     args = parser.parse_args()
+    # args.coins ="BTC,FTM" 
+    # args.resolutions = "1h,24h"
+    # args.start_time = "2024-05-14T00:00:00" 
+    # args.end_time = "2025-04-14T00:00:00" 
+    # args.endpoint_file_paths = "./data/endpoints_file_path_santiment.json" 
+    # args.save_folder = "./data/test/santiment/historical" 
+    # args.mode = "historical"
+
+
     main(args)
