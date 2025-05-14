@@ -11,3 +11,4 @@ keys_mine.py
 scraper_glassnode.py
 *__pycache__*
 .vscode/
+.env
